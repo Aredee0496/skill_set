@@ -1,21 +1,17 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../configs/db'); // เชื่อมต่อฐานข้อมูล
-
 const Employee = require('./Employee');
 const Prefix = require('./Prefix');
 const Position = require('./Position');
 const Skill = require('./Skill');
 const Project = require('./Project');
 const Trend = require('./Trend');
+const TechStack = require('./TechStack');
 
-Employee.associate({ Prefix, Position, Skill, Project, Trend, Employee });
+const models = { Employee, Prefix, Position, Skill, Project, Trend, TechStack }; // <--- เพิ่ม TechStack
 
-module.exports = {
-  Employee,
-  Prefix,
-  Position,
-  Skill,
-  Project,
-  Trend,
-}
+Object.values(models).forEach(model => {
+  if (typeof model.associate === 'function') {
+    model.associate(models);
+  }
+});
 
+module.exports = models;

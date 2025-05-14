@@ -1,4 +1,4 @@
-const { Employee, Prefix, Position, Skill, Project, Trend } = require('../models'); // นำเข้าโมเดลที่จำเป็น
+const { Employee, Prefix, Position, Skill, Project, Trend } = require('../models');
 
 // 📥 สร้างพนักงานใหม่
 exports.createEmployee = async (req, res) => {
@@ -14,36 +14,70 @@ exports.createEmployee = async (req, res) => {
 exports.getAllEmployees = async (req, res) => {
   try {
     const employees = await Employee.findAll({
+      attributes: [
+        'id',
+        'employee_id',
+        'prefix_id',
+        'fname',
+        'lname',
+        'nname',
+        'position_id',
+        'skill_id',
+        'project_id',
+        'lead_id',
+        'trend_id',
+      ],
       include: [
         {
-          model: Prefix, // ดึงข้อมูลจากตาราง Prefix
-          attributes: ['id', 'name'], // เลือกแค่ฟิลด์ที่ต้องการ
+          model: Prefix,
+          as: 'prefix',
+          attributes: ['name'],
         },
         {
-          model: Position, // ดึงข้อมูลจากตาราง Position
-          attributes: ['id', 'title'],
+          model: Position,
+          as: 'position',
+          attributes: ['name'],
         },
         {
-          model: Skill, // ดึงข้อมูลจากตาราง Skill
-          attributes: ['id', 'skill_name'],
+          model: Skill,
+          as: 'skill',
+          attributes: ['name'],
         },
         {
-          model: Project, // ดึงข้อมูลจากตาราง Project
-          attributes: ['id', 'project_name'],
+          model: Project,
+          as: 'project',
+          attributes: ['name'],
         },
         {
-          model: Employee, // ดึงข้อมูลจากตาราง Employee สำหรับ lead_id
-          as: 'lead', // ตั้งชื่อ alias เพื่อหลีกเลี่ยงความขัดแย้ง
-          attributes: ['id', 'fname', 'lname'], // เลือกฟิลด์ที่ต้องการ
+          model: Employee,
+          as: 'lead',
+          attributes: ['fname', 'lname'],
         },
         {
-          model: Trend, // ดึงข้อมูลจากตาราง Trend
-          attributes: ['id', 'trend_name'],
+          model: Trend,
+          as: 'trend',
+          attributes: ['name'],
         },
       ],
     });
 
-    res.status(200).json(employees);
+    const formattedEmployees = employees.map(employee => {
+    return {
+        id: employee.id,
+        employee_id: employee.employee_id,
+        prefix: employee.prefix ? employee.prefix.name : null,
+        fname: employee.fname,
+        lname: employee.lname,
+        nname: employee.nname,
+        position: employee.position ? employee.position.name : null,
+        skill: employee.skill ? employee.skill.name : null,
+        project: employee.project ? employee.project.name : null,
+        lead: employee.lead ? `${employee.lead.fname} ${employee.lead.lname}` : null,
+        trend: employee.trend ? employee.trend.name : null,
+    };
+});
+
+    res.status(200).json(formattedEmployees);
   } catch (error) {
     res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน', error });
     console.log(error);

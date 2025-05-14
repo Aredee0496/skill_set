@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../configs/db.js'); // ตรวจสอบให้เส้นทางถูกต้อง
+const sequelize = require('../configs/db.js');
 
 const Employee = sequelize.define('Employee', {
   id: {
@@ -9,21 +9,22 @@ const Employee = sequelize.define('Employee', {
   },
   employee_id: {
     type: DataTypes.STRING,
+    unique: true,
   },
   prefix_id: DataTypes.INTEGER,
   fname: {
     type: DataTypes.STRING,
-    allowNull: false,  // ทำให้ fname เป็นค่าที่ต้องการ
+    allowNull: false,
   },
   lname: {
     type: DataTypes.STRING,
-    allowNull: false,  // ทำให้ lname เป็นค่าที่ต้องการ
+    allowNull: false,
   },
   nname: DataTypes.STRING,
   position_id: DataTypes.INTEGER,
   skill_id: DataTypes.INTEGER,
   project_id: DataTypes.INTEGER,
-  lead_id: DataTypes.INTEGER,
+  lead_id: DataTypes.STRING,
   trend_id: DataTypes.INTEGER,
 }, {
   tableName: 'employee',
@@ -36,14 +37,17 @@ const Employee = sequelize.define('Employee', {
   ],
 });
 
-// การกำหนดความสัมพันธ์
 Employee.associate = (models) => {
-  Employee.belongsTo(models.Prefix, { foreignKey: 'prefix_id' });
-  Employee.belongsTo(models.Position, { foreignKey: 'position_id' });
-  Employee.belongsTo(models.Skill, { foreignKey: 'skill_id' });
-  Employee.belongsTo(models.Project, { foreignKey: 'project_id' });
-  Employee.belongsTo(models.Employee, { foreignKey: 'id', as: 'lead' });
-  Employee.belongsTo(models.Trend, { foreignKey: 'trend_id' });
+    Employee.belongsTo(models.Prefix, { foreignKey: 'prefix_id', as: 'prefix' }); 
+    Employee.belongsTo(models.Position, { foreignKey: 'position_id', as: 'position' }); 
+    Employee.belongsTo(models.Skill, { foreignKey: 'skill_id', as: 'skill' }); 
+    Employee.belongsTo(models.Project, { foreignKey: 'project_id', as: 'project' }); 
+    Employee.belongsTo(models.Employee, {
+        foreignKey: 'lead_id',
+        targetKey: 'employee_id',     
+        as: 'lead'
+    });
+    Employee.belongsTo(models.Trend, { foreignKey: 'trend_id', as: 'trend' }); 
 };
 
 module.exports = Employee;
