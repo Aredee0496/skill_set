@@ -2,10 +2,13 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../configs/db.js'); // ตรวจสอบให้เส้นทางถูกต้อง
 
 const Employee = sequelize.define('Employee', {
-  employee_id: {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+  },
+  employee_id: {
+    type: DataTypes.STRING,
   },
   prefix_id: DataTypes.INTEGER,
   fname: {
@@ -39,7 +42,7 @@ Employee.associate = (models) => {
   Employee.belongsTo(models.Position, { foreignKey: 'position_id' });
   Employee.belongsTo(models.Skill, { foreignKey: 'skill_id' });
   Employee.belongsTo(models.Project, { foreignKey: 'project_id' });
-  Employee.belongsTo(models.Employee, { foreignKey: 'lead_id', as: 'Lead' }); // สำหรับ lead_id ที่อ้างอิงถึงพนักงานคนอื่น
+  Employee.belongsTo(models.Employee, { foreignKey: 'id', as: 'lead' });
   Employee.belongsTo(models.Trend, { foreignKey: 'trend_id' });
 };
 

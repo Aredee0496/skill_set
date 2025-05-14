@@ -11,6 +11,10 @@ const Level = sequelize.define('Level', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 }, {
   tableName: 'level',
   timestamps: false,
