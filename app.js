@@ -6,20 +6,20 @@ var logger = require('morgan');
 var cors = require('cors');
 
 const sequelize = require('./configs/db.js'); // <--- เพิ่ม
-require('./models/Employee');  
-require('./models/Project');
-require('./models/EmployeeTechSkill');
-require('./models/Trend');
-require('./models/Position');
-require('./models/Skill');
-require('./models/Prefix');
-require('./models/Level');
-require('./models/TechStack');
+require('./models/employee');  
+require('./models/project');
+require('./models/employee_tech_skill');
+require('./models/trend');
+require('./models/position');
+require('./models/skill');
+require('./models/prefix');
+require('./models/level');
+require('./models/tech_stack');   
 
 var indexRouter = require('./routes/index');
 var employeesRouter = require('./routes/empolyee.js');
 
-var app = express();
+var app = express(); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
