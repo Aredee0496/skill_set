@@ -1,10 +1,10 @@
-const Employee = require('./Employee');
-const Prefix = require('./Prefix');
-const Position = require('./Position');
-const Skill = require('./Skill');
-const Project = require('./Project');
-const Trend = require('./Trend');
-const TechStack = require('./TechStack');
+const Employee = require('./employee');
+const Prefix = require('./prefix');
+const Position = require('./position');
+const Skill = require('./skill');
+const Project = require('./project');
+const Trend = require('./trend');
+const TechStack = require('./tech_stack');
 
 const models = { Employee, Prefix, Position, Skill, Project, Trend, TechStack }; // <--- เพิ่ม TechStack
 
