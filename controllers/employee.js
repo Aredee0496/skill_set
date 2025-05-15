@@ -1,6 +1,5 @@
 const { Employee, Prefix, Position, Skill, Project, Trend } = require('../models');
 
-// 📥 สร้างพนักงานใหม่
 exports.createEmployee = async (req, res) => {
   try {
     const employee = await Employee.create(req.body);
@@ -10,10 +9,13 @@ exports.createEmployee = async (req, res) => {
   }
 };
 
-// 📤 อ่านข้อมูลพนักงานทั้งหมด
-exports.getAllEmployees = async (req, res) => {
+exports.getEmployeesByPagination = async (req, res) => {
   try {
-    const employees = await Employee.findAll({
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    const { count, rows } = await Employee.findAndCountAll({
       attributes: [
         'id',
         'employee_id',
@@ -24,7 +26,7 @@ exports.getAllEmployees = async (req, res) => {
         'position_id',
         'skill_id',
         'project_id',
-        'lead_id',
+        'manager_name',
         'trend_id',
       ],
       include: [
@@ -49,9 +51,76 @@ exports.getAllEmployees = async (req, res) => {
           attributes: ['name'],
         },
         {
-          model: Employee,
-          as: 'lead',
-          attributes: ['fname', 'lname'],
+          model: Trend,
+          as: 'trend',
+          attributes: ['name'],
+        },
+      ],
+      limit,
+      offset,
+    });
+
+    const formattedEmployees = rows.map(employee => ({
+      id: employee.id,
+      employee_id: employee.employee_id,
+      prefix: employee.prefix ? employee.prefix.name : null,
+      fname: employee.fname,
+      lname: employee.lname,
+      nname: employee.nname,
+      position: employee.position ? employee.position.name : null,
+      skill: employee.skill ? employee.skill.name : null,
+      project: employee.project ? employee.project.name : null,
+      manager_name: employee.manager_name,
+      trend: employee.trend ? employee.trend.name : null,
+    }));
+
+    res.status(200).json({
+      total: count,
+      page,
+      totalPages: Math.ceil(count / limit),
+      employees: formattedEmployees,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลพนักงานแบบแบ่งหน้า', error });
+  }
+};
+
+exports.getEmployeeById = async (req, res) => {
+  try {
+    const employee = await Employee.findByPk(req.params.id, {
+      attributes: [
+        'id',
+        'employee_id',
+        'prefix_id',
+        'fname',
+        'lname',
+        'nname',
+        'position_id',
+        'skill_id',
+        'project_id',
+        'manager_name',
+        'trend_id',
+      ],
+      include: [
+        {
+          model: Prefix,
+          as: 'prefix',
+          attributes: ['name'],
+        },
+        {
+          model: Position,
+          as: 'position',
+          attributes: ['name'],
+        },
+        {
+          model: Skill,
+          as: 'skill',
+          attributes: ['name'],
+        },
+        {
+          model: Project,
+          as: 'project',
+          attributes: ['name'],
         },
         {
           model: Trend,
@@ -61,42 +130,28 @@ exports.getAllEmployees = async (req, res) => {
       ],
     });
 
-    const formattedEmployees = employees.map(employee => {
-    return {
-        id: employee.id,
-        employee_id: employee.employee_id,
-        prefix: employee.prefix ? employee.prefix.name : null,
-        fname: employee.fname,
-        lname: employee.lname,
-        nname: employee.nname,
-        position: employee.position ? employee.position.name : null,
-        skill: employee.skill ? employee.skill.name : null,
-        project: employee.project ? employee.project.name : null,
-        lead: employee.lead ? `${employee.lead.fname} ${employee.lead.lname}` : null,
-        trend: employee.trend ? employee.trend.name : null,
-    };
-});
-
-    res.status(200).json(formattedEmployees);
-  } catch (error) {
-    res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน', error });
-    console.log(error);
-  }
-};
-
-
-// 🔍 อ่านข้อมูลพนักงานรายตัว
-exports.getEmployeeById = async (req, res) => {
-  try {
-    const employee = await Employee.findByPk(req.params.id);
     if (!employee) return res.status(404).json({ message: 'ไม่พบพนักงาน' });
-    res.status(200).json(employee);
+
+    const formattedEmployee = {
+      id: employee.id,
+      employee_id: employee.employee_id,
+      prefix: employee.prefix ? employee.prefix.name : null,
+      fname: employee.fname,
+      lname: employee.lname,
+      nname: employee.nname,
+      position: employee.position ? employee.position.name : null,
+      skill: employee.skill ? employee.skill.name : null,
+      project: employee.project ? employee.project.name : null,
+      manager_name: employee.manager_name,
+      trend: employee.trend ? employee.trend.name : null,
+    };
+
+    res.status(200).json(formattedEmployee);
   } catch (error) {
     res.status(500).json({ message: 'เกิดข้อผิดพลาดในการดึงข้อมูลพนักงาน', error });
   }
 };
 
-// ✏️ แก้ไขข้อมูลพนักงาน
 exports.updateEmployee = async (req, res) => {
   try {
     const employee = await Employee.findByPk(req.params.id);
@@ -109,14 +164,13 @@ exports.updateEmployee = async (req, res) => {
   }
 };
 
-// ❌ ลบพนักงาน
 exports.deleteEmployee = async (req, res) => {
   try {
     const employee = await Employee.findByPk(req.params.id);
     if (!employee) return res.status(404).json({ message: 'ไม่พบพนักงาน' });
 
     await employee.destroy();
-    res.status(204).send(); // No content
+    res.status(204).send(); 
   } catch (error) {
     res.status(500).json({ message: 'เกิดข้อผิดพลาดในการลบพนักงาน', error });
   }

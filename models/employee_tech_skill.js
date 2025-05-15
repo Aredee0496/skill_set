@@ -24,7 +24,6 @@ const EmployeeTechSkill = sequelize.define('EmployeeTechSkill', {
   timestamps: false,
 });
 
-// 👉 กำหนดความสัมพันธ์ที่นี่
 EmployeeTechSkill.associate = (models) => {
   EmployeeTechSkill.belongsTo(models.Employee, {
     foreignKey: 'employee_id'

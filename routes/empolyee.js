@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const { getAllEmployees } = require('../controllers/employee.js');
+const { createEmployee, getEmployeeById, getEmployeesByPagination, updateEmployee, deleteEmployee } = require('../controllers/employee.js');
 
-/* GET users listing. */
-router.get('/', getAllEmployees);
-
+router.get('/', getEmployeesByPagination);
+router.post('/', createEmployee);
+router.get('/:id', getEmployeeById);
+router.put('/:id', updateEmployee);
+router.delete('/:id', deleteEmployee);
 module.exports = router;

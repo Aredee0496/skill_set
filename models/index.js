@@ -6,7 +6,7 @@ const Project = require('./project');
 const Trend = require('./trend');
 const TechStack = require('./tech_stack');
 
-const models = { Employee, Prefix, Position, Skill, Project, Trend, TechStack }; // <--- เพิ่ม TechStack
+const models = { Employee, Prefix, Position, Skill, Project, Trend, TechStack };
 
 Object.values(models).forEach(model => {
   if (typeof model.associate === 'function') {

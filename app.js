@@ -16,8 +16,9 @@ require('./models/prefix');
 require('./models/level');
 require('./models/tech_stack');   
 
-var indexRouter = require('./routes/index');
 var employeesRouter = require('./routes/empolyee.js');
+var projectsRouter = require('./routes/project.js');
+var uploadRouter = require('./routes/upload.js');
 
 var app = express(); 
 
@@ -33,8 +34,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/employees', employeesRouter);
+app.use('/projects', projectsRouter);
+app.use('/uploads', uploadRouter); 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
