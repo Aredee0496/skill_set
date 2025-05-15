@@ -8,7 +8,7 @@ const EmployeeTechSkill = sequelize.define('EmployeeTechSkill', {
     autoIncrement: true,
   },
   employee_id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   techstack_id: {
@@ -26,10 +26,11 @@ const EmployeeTechSkill = sequelize.define('EmployeeTechSkill', {
 
 EmployeeTechSkill.associate = (models) => {
   EmployeeTechSkill.belongsTo(models.Employee, {
-    foreignKey: 'employee_id'
+    foreignKey: 'employee_id',
+    targetKey: 'employee_id' 
   });
 
-  EmployeeTechSkill.belongsTo(models.Techstack, {
+  EmployeeTechSkill.belongsTo(models.TechStack, {
     foreignKey: 'techstack_id'
   });
 

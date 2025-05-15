@@ -19,6 +19,7 @@ require('./models/tech_stack');
 var employeesRouter = require('./routes/empolyee.js');
 var projectsRouter = require('./routes/project.js');
 var uploadRouter = require('./routes/upload.js');
+var importRouter = require('./routes/import.js');
 
 var app = express(); 
 
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/employees', employeesRouter);
 app.use('/projects', projectsRouter);
 app.use('/uploads', uploadRouter); 
+app.use('/imports', importRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

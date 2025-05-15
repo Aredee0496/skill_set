@@ -7,7 +7,7 @@ exports.createEmployee = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'เกิดข้อผิดพลาดในการสร้างพนักงาน', error });
   }
-};
+}; 
 
 exports.getEmployeesByPagination = async (req, res) => {
   try {

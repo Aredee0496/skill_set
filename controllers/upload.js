@@ -16,7 +16,7 @@ exports.importEmployeeCSV = async (req, res) => {
   }
 
   const results = [];
-  const buffer = req.file.buffer.toString("utf8"); // อ่าน Buffer เป็น String
+  const buffer = req.file.buffer.toString("utf8");
   const readableStream = Readable.from(buffer);
 
   readableStream
@@ -98,7 +98,6 @@ async function processAndImportEmployees(csvData) {
         start_work_date_excel: startDateExcel,
         trend_start_work_date: trendStartDate,
       };
-      console.log('ข้อมูลพนักงาน:', employeeData);
       const createdEmployee = await Employee.create(employeeData);
       importedEmployees.push(createdEmployee);
     } catch (error) {
