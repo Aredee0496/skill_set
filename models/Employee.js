@@ -60,6 +60,12 @@ Employee.associate = (models) => {
     Employee.belongsTo(models.Skill, { foreignKey: 'skill_id', as: 'skill' }); 
     Employee.belongsTo(models.Project, { foreignKey: 'project_id', as: 'project' }); 
     Employee.belongsTo(models.Trend, { foreignKey: 'trend_id', as: 'trend' }); 
+    Employee.belongsToMany(models.TechStack, {
+      through: 'EmployeeTechSkill', // ชื่อตารางกลาง
+      foreignKey: 'employee_id', // Foreign Key ในตารางกลางที่อ้างอิง Employee
+      otherKey: 'techstack_id', // Foreign Key ในตารางกลางที่อ้างอิง TechStack
+      as: 'techstacks' // Alias สำหรับความสัมพันธ์นี้
+    });
 };
 
 module.exports = Employee;
