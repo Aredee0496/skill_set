@@ -6,10 +6,10 @@ var logger = require('morgan');
 var cors = require('cors');
 
 const sequelize = require('./configs/db.js'); // <--- เพิ่ม
-require('./models/employee');  
+require('./models/employee.js');  
 require('./models/project');
 require('./models/employee_tech_skill');
-require('./models/trend');
+require('./models/trend.js');
 require('./models/position');
 require('./models/skill');
 require('./models/prefix');
