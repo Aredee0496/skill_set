@@ -21,6 +21,7 @@ var projectsRouter = require('./routes/project.js');
 var employeeTechSkillRouter = require('./routes/employee_tech_skill.js');
 var uploadRouter = require('./routes/upload.js');
 var importRouter = require('./routes/import.js');
+var percentRouter = require('./routes/employee_pj_tr_percent.js')
 
 var app = express(); 
 
@@ -41,6 +42,7 @@ app.use('/projects', projectsRouter);
 app.use('/employee_tech_skills', employeeTechSkillRouter);
 app.use('/uploads', uploadRouter); 
 app.use('/imports', importRouter);
+app.use('/percent', percentRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
