@@ -6,20 +6,23 @@ var logger = require('morgan');
 var cors = require('cors');
 
 const sequelize = require('./configs/db.js'); // <--- เพิ่ม
-require('./models/Employee');  
-require('./models/Project');
-require('./models/EmployeeTechSkill');
-require('./models/Trend');
-require('./models/Position');
-require('./models/Skill');
-require('./models/Prefix');
-require('./models/Level');
-require('./models/TechStack');
+require('./models/employee');  
+require('./models/project');
+require('./models/employee_tech_skill');
+require('./models/trend');
+require('./models/position');
+require('./models/skill');
+require('./models/prefix');
+require('./models/level');
+require('./models/tech_stack');   
 
-var indexRouter = require('./routes/index');
 var employeesRouter = require('./routes/empolyee.js');
+var projectsRouter = require('./routes/project.js');
+var employeeTechSkillRouter = require('./routes/employee_tech_skill.js');
+var uploadRouter = require('./routes/upload.js');
+var importRouter = require('./routes/import.js');
 
-var app = express();
+var app = express(); 
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,8 +36,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/employees', employeesRouter);
+app.use('/projects', projectsRouter);
+app.use('/employee_tech_skills', employeeTechSkillRouter);
+app.use('/uploads', uploadRouter); 
+app.use('/imports', importRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

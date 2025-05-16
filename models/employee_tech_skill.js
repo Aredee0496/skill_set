@@ -24,18 +24,20 @@ const EmployeeTechSkill = sequelize.define('EmployeeTechSkill', {
   timestamps: false,
 });
 
-// 👉 กำหนดความสัมพันธ์ที่นี่
 EmployeeTechSkill.associate = (models) => {
   EmployeeTechSkill.belongsTo(models.Employee, {
-    foreignKey: 'employee_id'
+    foreignKey: 'employee_id',
+    as: 'employee'
   });
 
-  EmployeeTechSkill.belongsTo(models.Techstack, {
-    foreignKey: 'techstack_id'
+  EmployeeTechSkill.belongsTo(models.TechStack, {
+    foreignKey: 'techstack_id',
+    as: 'techstack'
   });
 
   EmployeeTechSkill.belongsTo(models.Level, {
-    foreignKey: 'level_id'
+    foreignKey: 'level_id',
+    as: 'level'
   });
 };
 

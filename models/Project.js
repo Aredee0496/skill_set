@@ -12,29 +12,24 @@ const Project = sequelize.define('Project', {
     allowNull: false,
   },
   frontend: {
-    type: DataTypes.JSON, // เก็บข้อมูล JSON ที่มีหลาย techstack_id
+    type: DataTypes.JSON,
     allowNull: true,
   },
   backend: {
-    type: DataTypes.JSON, // เก็บข้อมูล JSON ที่มีหลาย techstack_id
+    type: DataTypes.JSON,
     allowNull: true,
   },
   database: {
-    type: DataTypes.JSON, // เก็บข้อมูล JSON ที่มีหลาย techstack_id
+    type: DataTypes.JSON, 
     allowNull: true,
   },
-  others: {
-    type: DataTypes.JSON, // เก็บข้อมูล JSON ที่มีหลาย techstack_id
+  other: {
+    type: DataTypes.JSON, 
     allowNull: true,
   },
 }, {
   tableName: 'project',
   timestamps: false,
 });
-
-// การกำหนดความสัมพันธ์ (ถ้าต้องการ)
-Project.associate = (models) => {
-  Project.belongsTo(models.TechStack, { foreignKey: 'techstack_id' });
-};
 
 module.exports = Project;
