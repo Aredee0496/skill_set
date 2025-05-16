@@ -18,6 +18,7 @@ require('./models/tech_stack');
 
 var employeesRouter = require('./routes/empolyee.js');
 var projectsRouter = require('./routes/project.js');
+var employeeTechSkillRouter = require('./routes/employee_tech_skill.js');
 var uploadRouter = require('./routes/upload.js');
 var importRouter = require('./routes/import.js');
 
@@ -37,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/employees', employeesRouter);
 app.use('/projects', projectsRouter);
+app.use('/employee_tech_skills', employeeTechSkillRouter);
 app.use('/uploads', uploadRouter); 
 app.use('/imports', importRouter);
 
